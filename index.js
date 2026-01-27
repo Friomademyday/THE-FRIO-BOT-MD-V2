@@ -1,3 +1,4 @@
+const axios = require("axios")
 const { 
     default: makeWASocket, 
     useMultiFileAuthState, 
@@ -7,6 +8,7 @@ const {
 const pino = require("pino")
 const { Boom } = require("@hapi/boom")
 const chalk = require("chalk")
+let currentRating = 'pg13'
 
 async function startFrioBot() {
     const { state, saveCreds } = await useMultiFileAuthState('FrioSession')
@@ -58,6 +60,105 @@ async function startFrioBot() {
             if (body.startsWith('@ping')) {
                 await conn.sendMessage(from, { text: 'Pong! 🏓 THE-FRiO-BOT is active.' }, { quoted: m })
             }
+
+            if (body.startsWith('@rating')) {
+    let newRating = body.split(' ')[1]?.toLowerCase()
+    
+    if (!['pg', 'pg13', 'r'].includes(newRating)) {
+        await conn.sendMessage(from, { text: `Usage: @rating pg, pg13, or r\nCurrent rating is: ${currentRating.toUpperCase()}` }, { quoted: m })
+        return
+    }
+
+    if (currentRating === newRating) {
+        await conn.sendMessage(from, { text: `The questions are already rated ${currentRating.toUpperCase()}.` }, { quoted: m })
+    } else {
+        currentRating = newRating
+        await conn.sendMessage(from, { text: `Rating successfully changed to ${currentRating.toUpperCase()}.` }, { quoted: m })
+    }
+            }
+
+        if (body.startsWith('@dare')) {
+    try {
+        const response = await axios.get(`https://api.truthordarebot.xyz/api/dare?rating=${currentRating}`)
+        await conn.sendMessage(from, { text: `*「 DARE (${currentRating.toUpperCase()}) 」*\n\n${response.data.question}` }, { quoted: m })
+    } catch (e) {
+        await conn.sendMessage(from, { text: "API Error." }, { quoted: m })
+    }
+            }
+
+    if (body.startsWith('@truth')) {
+    try {
+        const res = await axios.get(`https://api.truthordarebot.xyz/api/truth?rating=${currentRating}`)
+        await conn.sendMessage(from, { text: `*「 TRUTH (${currentRating.toUpperCase()}) 」*\n\n${res.data.question}` }, { quoted: m })
+    } catch (e) {
+        await conn.sendMessage(from, { text: "API Error." }, { quoted: m })
+    }
+}
+
+if (body.startsWith('@wyr')) {
+    try {
+        const res = await axios.get(`https://api.truthordarebot.xyz/api/wyr?rating=${currentRating}`)
+        await conn.sendMessage(from, { text: `*「 WOULD YOU RATHER (${currentRating.toUpperCase()}) 」*\n\n${res.data.question}` }, { quoted: m })
+    } catch (e) {
+        await conn.sendMessage(from, { text: "API Error." }, { quoted: m })
+    }
+}
+
+if (body.startsWith('@nhie')) {
+    try {
+        const res = await axios.get(`https://api.truthordarebot.xyz/api/nhie?rating=${currentRating}`)
+        await conn.sendMessage(from, { text: `*「 NEVER HAVE I EVER (${currentRating.toUpperCase()}) 」*\n\n${res.data.question}` }, { quoted: m })
+    } catch (e) {
+        await conn.sendMessage(from, { text: "API Error." }, { quoted: m })
+    }
+}
+
+if (body.startsWith('@paranoia')) {
+    try {
+        const res = await axios.get(`https://api.truthordarebot.xyz/api/paranoia?rating=${currentRating}`)
+        await conn.sendMessage(from, { text: `*「 PARANOIA (${currentRating.toUpperCase()}) 」*\n\n${res.data.question}` }, { quoted: m })
+    } catch (e) {
+        await conn.sendMessage(from, { text: "API Error." }, { quoted: m })
+    }
+                                      }
+
+      if (body.startsWith('@advice')) {
+    try {
+        const res = await axios.get('https://api.adviceslip.com/advice')
+        const advice = res.data.slip.advice
+        
+        await conn.sendMessage(from, { text: `*「 WISE ADVICE 」*\n\n"${advice}"` }, { quoted: m })
+    } catch (e) {
+        await conn.sendMessage(from, { text: "Advice API Error." }, { quoted: m })
+    }
+            }
+
+    if (body.startsWith('@joke')) {
+    try {
+        let blacklist = 'religious,political,racist,sexist,explicit'
+        if (currentRating === 'r') {
+            blacklist = 'religious,political' // Still blocking religion/politics but allowing the rest
+        }
+        
+        const res = await axios.get(`https://v2.jokeapi.dev/joke/Any?blacklistFlags=${blacklist}`)
+        const joke = res.data
+        
+        let jokeText = `*「 JOKE (${currentRating.toUpperCase()}) 」*\n\n`
+        if (joke.type === 'single') {
+            jokeText += joke.joke
+        } else {
+            jokeText += `${joke.setup}\n\n_... ${joke.delivery}_`
+        }
+        
+        await conn.sendMessage(from, { text: jokeText }, { quoted: m })
+    } catch (e) {
+        await conn.sendMessage(from, { text: "Joke API Error." }, { quoted: m })
+    }
+    }
+
+            
+
+            
         } catch (err) {
             console.log(err)
         }
