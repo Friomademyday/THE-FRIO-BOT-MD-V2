@@ -182,6 +182,52 @@ if (body.startsWith('@paranoia')) {
     }
     }
 
+    if (body.startsWith('@profile')) {
+    let user = m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || m.message.extendedTextMessage?.contextInfo?.participant || sender
+    
+    if (!db[user]) {
+        db[user] = { 
+            coins: 1000, 
+            emblems: 0, 
+            rank: 'NOOB', 
+            collection: [], 
+            inventory: [], 
+            lastClaim: '', 
+            msccount: 0 
+        }
+        saveDb()
+    }
+
+    const userStats = db[user]
+    const pushname = m.pushName || "User"
+    
+    let profileMsg = `👤 *USER PROFILE* 👤\n\n`
+    profileMsg += `📝 *Name:* ${pushname}\n`
+    profileMsg += `🏅 *Rank:* ${userStats.rank}\n`
+    profileMsg += `💬 *Messages:* ${userStats.msccount || 0}\n`
+    profileMsg += `━━━━━━━━━━━━━━━\n`
+    profileMsg += `💰 *Coins:* ${userStats.coins.toLocaleString()} 🪙\n`
+    profileMsg += `💠 *Emblems:* ${userStats.emblems.toLocaleString()} 💎\n`
+    profileMsg += `━━━━━━━━━━━━━━━\n`
+    profileMsg += `🎴 *Collection:* ${userStats.collection.length} Characters\n`
+    profileMsg += `🎒 *Inventory:* ${userStats.inventory.length} Items\n`
+    profileMsg += `━━━━━━━━━━━━━━━\n`
+    profileMsg += `📅 *Joined:* 2026\n`
+
+    let ppUrl
+    try {
+        ppUrl = await conn.profilePictureUrl(user, 'image')
+    } catch {
+        ppUrl = 'https://i.ibb.co/4pDNDk1/avatar.png' 
+    }
+
+    await conn.sendMessage(from, { 
+        image: { url: ppUrl }, 
+        caption: profileMsg,
+        mentions: [user]
+    }, { quoted: m })
+    }
+
             
 
             
