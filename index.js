@@ -8,6 +8,10 @@ const {
 const pino = require("pino")
 const { Boom } = require("@hapi/boom")
 const chalk = require("chalk")
+
+let ownerNumber = "16036316635@s.whatsapp.net"
+let creatorName = "FRiO"
+
 let currentRating = 'pg13'
 
 async function startFrioBot() {
