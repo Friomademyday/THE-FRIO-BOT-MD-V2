@@ -81,6 +81,9 @@ if (!db[sender]) {
     }
     saveDb()
 }
+            
+db[sender].msccount += 1
+saveDb()
 
             
             if (body.startsWith('@ping')) {
