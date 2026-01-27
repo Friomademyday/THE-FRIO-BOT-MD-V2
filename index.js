@@ -207,7 +207,7 @@ if (body.startsWith('@paranoia')) {
     profileMsg += `💬 *Messages:* ${userStats.msccount || 0}\n`
     profileMsg += `━━━━━━━━━━━━━━━\n`
     profileMsg += `💰 *Coins:* ${userStats.coins.toLocaleString()} 🪙\n`
-    profileMsg += `💠 *Emblems:* ${userStats.emblems.toLocaleString()} 💎\n`
+    profileMsg += `🔮 *Emblems:* ${userStats.emblems.toLocaleString()} 💎\n`
     profileMsg += `━━━━━━━━━━━━━━━\n`
     profileMsg += `🎴 *Collection:* ${userStats.collection.length} Characters\n`
     profileMsg += `🎒 *Inventory:* ${userStats.inventory.length} Items\n`
