@@ -11,7 +11,7 @@ const chalk = require("chalk")
 
 let ownerNumber = "16036316635@s.whatsapp.net"
 let creatorName = "FRiO"
-
+let economyPath = './economyData.json'
 let currentRating = 'pg13'
 
 async function startFrioBot() {
@@ -60,6 +60,28 @@ async function startFrioBot() {
             const from = m.key.remoteJid
             const type = Object.keys(m.message)[0]
             const body = (type === 'conversation') ? m.message.conversation : (type == 'extendedTextMessage') ? m.message.extendedTextMessage.text : ''
+
+            let db = JSON.parse(fs.readFileSync(economyPath))
+
+const saveDb = () => {
+    fs.writeFileSync(economyPath, JSON.stringify(db, null, 2))
+}
+
+const sender = m.key.participant || m.key.remoteJid
+
+if (!db[sender]) {
+    db[sender] = { 
+        coins: 1000, 
+        emblems: 0, 
+        rank: 'NOOB', 
+        collection: [], 
+        inventory: [], 
+        lastClaim: '', 
+        msccount: 0 
+    }
+    saveDb()
+}
+
             
             if (body.startsWith('@ping')) {
                 await conn.sendMessage(from, { text: 'Pong! 🏓 THE-FRiO-BOT is active.' }, { quoted: m })
