@@ -441,6 +441,33 @@ await database.saveUser(user);
 await database.updateInventory(message.sender.id, inventory);
 reply("✅ Success! You bought a Kryptonite Chunk (10 pieces).");
 }
+            if (message.body === '@buysc') {
+let user = await database.getUser(message.sender.id);
+let inventory = await database.getInventory(message.sender.id);
+
+if (user.coins < 300000) return reply("❌ You need 300,000 🪙 for a Second Chance potion.");
+
+user.coins -= 300000;
+inventory.second_chance += 1;
+
+await database.saveUser(user);
+await database.updateInventory(message.sender.id, inventory);
+reply("✅ Purchase Successful! 1 Second Chance potion added to your inventory. Use it to keep your coins after a losing gamble.");
+}
+
+if (message.body === '@buyie') {
+let user = await database.getUser(message.sender.id);
+let inventory = await database.getInventory(message.sender.id);
+
+if (user.coins < 200000) return reply("❌ You need 200,000 🪙 for an Insurance Elixir.");
+
+user.coins -= 200000;
+inventory.insurance_elixir += 1;
+
+await database.saveUser(user);
+await database.updateInventory(message.sender.id, inventory);
+reply("✅ Purchase Successful! 1 Insurance Elixir added to your inventory. Activate it for 5 minutes of 50% loss protection.");
+}
             
         } catch (err) {
             console.log(err)
