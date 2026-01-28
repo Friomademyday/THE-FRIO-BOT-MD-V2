@@ -348,6 +348,99 @@ image: { url: "MENUS/economy.jpg" },
 caption: economyText
 });
 }
+
+        if (message.body === '@buymh101') {
+let user = await database.getUser(message.sender.id);
+if (user.coins < 25000) return reply("❌ You need 25,000 🪙 to buy Money Heist 101.");
+if (user.books.mh101) return reply("📘 You already own this book!");
+
+user.coins -= 25000;
+user.books.mh101 = true;
+user.rob_bonus += 5;
+
+await database.saveUser(user);
+reply("✅ Purchase Successful! Your @rob success rate has increased by 5%.");
+}
+
+if (message.body === '@buymh102') {
+let user = await database.getUser(message.sender.id);
+if (!user.books.mh101) return reply("🚫 Requirement failed: You must own Money Heist 101 first!");
+if (user.coins < 50000) return reply("❌ You need 50,000 🪙 to buy Money Heist 102.");
+if (user.books.mh102) return reply("📘 You already own this book!");
+
+user.coins -= 50000;
+user.books.mh102 = true;
+user.rob_bonus += 5;
+
+await database.saveUser(user);
+reply("✅ Purchase Successful! Your @rob success rate has increased by another 5%.");
+}
+
+if (message.body === '@buymh103') {
+let user = await database.getUser(message.sender.id);
+if (!user.books.mh102) return reply("🚫 Requirement failed: You must own Money Heist 102 first!");
+if (user.coins < 75000) return reply("❌ You need 75,000 🪙 to buy Money Heist 103.");
+if (user.books.mh103) return reply("📘 You already own this book!");
+
+user.coins -= 75000;
+user.books.mh103 = true;
+user.rob_bonus += 5;
+
+await database.saveUser(user);
+reply("✅ Purchase Successful! Your heist skills are now maxed out.");
+}
+
+if (message.body === '@buybfd') {
+let user = await database.getUser(message.sender.id);
+if (user.coins < 75000) return reply("❌ You need 75,000 🪙 to buy Banking For Dummies.");
+if (user.books.bfd) return reply("📘 You already own this book!");
+
+user.coins -= 75000;
+user.books.bfd = true;
+user.bank_fee_multiplier = 0.5;
+
+await database.saveUser(user);
+reply("✅ Purchase Successful! Your bank transaction fees are now reduced by 50%.");
+}
+
+if (message.body === '@buyaoth') {
+let user = await database.getUser(message.sender.id);
+if (user.coins < 50000) return reply("❌ You need 50,000 🪙 to buy The Art of the Hustle.");
+if (user.books.aoth) return reply("📘 You already own this book!");
+
+user.coins -= 50000;
+user.books.aoth = true;
+user.daily_bonus += 10000;
+
+await database.saveUser(user);
+reply("✅ Purchase Successful! You now receive an extra 10k every time you use @daily.");
+}
+
+if (message.body === '@buykryptonite') {
+let user = await database.getUser(message.sender.id);
+let inventory = await database.getInventory(message.sender.id);
+if (user.coins < 50000) return reply("❌ You need 50,000 🪙 for 1 piece of Kryptonite.");
+
+user.coins -= 50000;
+inventory.kryptonite += 1;
+
+await database.saveUser(user);
+await database.updateInventory(message.sender.id, inventory);
+reply("✅ Success! You bought 1 Kryptonite. Use it to pass through Man of Steel.");
+}
+
+if (message.body === '@buykryptonitechunk') {
+let user = await database.getUser(message.sender.id);
+let inventory = await database.getInventory(message.sender.id);
+if (user.coins < 450000) return reply("❌ You need 450,000 🪙 for a Kryptonite Chunk.");
+
+user.coins -= 450000;
+inventory.kryptonite += 10;
+
+await database.saveUser(user);
+await database.updateInventory(message.sender.id, inventory);
+reply("✅ Success! You bought a Kryptonite Chunk (10 pieces).");
+}
             
         } catch (err) {
             console.log(err)
