@@ -1001,6 +1001,41 @@ image: { url: "ANIME/CHARACTERS/OTHERS/sakura.jpg" },
 caption: infosakuraText
 });
 }
+            if (body === '@usekakegurui') {
+    const userId = sender
+    const now = Date.now()
+    const cooldown = 24 * 60 * 60 * 1000 // 24 Hours
+
+    
+    if (!db[userId].characters || !db[userId].characters.yumeko) {
+        return await conn.sendMessage(from, { text: "❌ You don't own Yumeko Jabami! Purchase her for 1B Emblems first." }, { quoted: m })
+    }
+
+    
+    if (db[userId].yumekoLastUsed && now - db[userId].yumekoLastUsed < cooldown) {
+        const remaining = cooldown - (now - db[userId].yumekoLastUsed)
+        const hours = Math.floor(remaining / (60 * 60 * 1000))
+        const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000))
+        return await conn.sendMessage(from, { text: `⏳ Yumeko is exhausted. Try again in ${hours}h ${minutes}m.` }, { quoted: m })
+    }
+
+    
+    db[userId].activeSkill = 'kakegurui'
+    db[userId].yumekoLastUsed = now
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+
+    await conn.sendMessage(from, { 
+        image: { url: "ANIME/CHARACTERS/OTHERS/KAKEGURUII.jpeg" },
+        caption: `✨ [ 𝗠𝗬𝗧𝗛𝗜𝗖𝗔𝗟 𝗔𝗖𝗧𝗜𝗩𝗔𝗧𝗘𝗗 ] ✨\n\n🎰 *SKILL:* KAKEGURUI\n📝 *EFFECT:* 100% Win rate on all gambling for 5 minutes!\n\n*“Let’s gamble until we go mad!”*`
+    }, { quoted: m })
+
+    
+    setTimeout(async () => {
+        db[userId].activeSkill = null
+        fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+        await conn.sendMessage(from, { text: "🃏 *Kakegurui* has timed out. The odds have returned to normal." }, { quoted: m })
+    }, 300000) // 5 Minutes
+            }
             
         } catch (err) {
             console.log(err)
