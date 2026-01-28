@@ -695,8 +695,8 @@ caption: "✅ TRANSACTION COMPLETE: Sanji joined the crew. Prepare for world-cla
 }
             if (message.body === '@buysakura') {
 let user = await database.getUser(message.sender.id);
-if (user.coins < 100) return reply("❌ You don't even have 100 coins? That's actually impressive.");
-if (user.characters.sakura) return reply("🌸 You already own Sakura. Your inventory is now 100% more pink.");
+if (user.coins < 100) return reply("❌ You don't even have 100 coins? That's rough.");
+if (user.characters.sakura) return reply("Unfortunately you already own Sakura.");
 
 user.coins -= 100;
 user.characters.sakura = true;
@@ -704,7 +704,7 @@ await database.saveUser(user);
 
 await client.sendMessage(message.from, {
 image: { url: "ANIME/CHARACTERS/OTHERS/sakura.jpg" },
-caption: "✅ TRANSACTION COMPLETE: You bought Sakura for 100 coins. She's here. Use @infosakura to see... well, to see her."
+caption: "✅ TRANSACTION COMPLETE: You really bought Sakura for 100 coins 😭😭?? You should've gambled 100 instead twin 😭🙏. Use @infosakura to see... well, to see her."
 });
             }
             
