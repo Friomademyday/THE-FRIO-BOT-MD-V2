@@ -902,7 +902,17 @@ caption: infomadaraText
 }
 
 if (message.body === '@infoluffy') {
-const infoluffyText = `null`;
+const infoluffyText = `🏴‍☠️ 𝗘𝗠𝗢𝗧𝗜𝗢𝗡 / 𝗥𝗘𝗔𝗖𝗧𝗜𝗢𝗡𝗦
+━━━━━━━━━━━━━━━━━━━━
+👤 *Character:* Monkey D. Luffy
+━━━━━━━━━━━━━━━━━━━━
+📦 *𝗔𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲 𝗠𝗼𝘃𝗲𝘀 (𝗚𝗜𝗙𝘀):*
+👊 @pistol | 🔥 @redhawk | 🐍 @blackmamba
+🥊 @gatling | 🦅 @jetculverin | 🦅 @konggun
+⚡ @kaminari
+
+📝 *Usage: Type the command to trigger the animation!*
+━━━━━━━━━━━━━━━━━━━━`;
 await client.sendMessage(message.from, {
 image: { url: "ANIME/CHARACTERS/ONEPIECE/luffy.jpg" },
 caption: infoluffyText
@@ -910,7 +920,16 @@ caption: infoluffyText
 }
 
 if (message.body === '@infozoro') {
-const infozoroText = `null`;
+const infozoroText = `🏴‍☠️ 𝗘𝗠𝗢𝗧𝗜𝗢𝗡 / 𝗥𝗘𝗔𝗖𝗧𝗜𝗢𝗡𝗦 
+━━━━━━━━━━━━━━━━━━━━
+👤 *Character:* Roronoa Zoro
+━━━━━━━━━━━━━━━━━━━━
+📦 *𝗔𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲 𝗠𝗼𝘃𝗲𝘀 (𝗚𝗜𝗙𝘀):*
+🍙 @onigiri | 🦁 @shishisonson | 🌪️ @dragontwister
+😈 @ashura | 🔥 @kingofhell
+
+📝 *Usage: Type the command to trigger the animation!*
+━━━━━━━━━━━━━━━━━━━━`;
 await client.sendMessage(message.from, {
 image: { url: "ANIME/CHARACTERS/ONEPIECE/zoro.jpg" },
 caption: infozoroText
@@ -918,7 +937,16 @@ caption: infozoroText
 }
 
 if (message.body === '@infosanji') {
-const infosanjiText = `null`;
+const infosanjiText = `🏴‍☠️ 𝗘𝗠𝗢𝗧𝗜𝗢𝗡 / 𝗥𝗘𝗔𝗖𝗧𝗜𝗢𝗡𝗦 
+━━━━━━━━━━━━━━━━━━━━
+👤 *Character:* Vinsmoke Sanji
+━━━━━━━━━━━━━━━━━━━━
+📦 *𝗔𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲 𝗠𝗼𝘃𝗲𝘀 (𝗚𝗜𝗙𝘀):*
+🔥 @diablejambe | ⚡ @ifritjambe
+🦵 @spectre | 🍖 @venaison
+
+📝 *Usage: Type the command to trigger the animation!*
+━━━━━━━━━━━━━━━━━━━━`;
 await client.sendMessage(message.from, {
 image: { url: "ANIME/CHARACTERS/ONEPIECE/sanji.jpg" },
 caption: infosanjiText
@@ -926,7 +954,15 @@ caption: infosanjiText
 }
 
 if (message.body === '@infoshanks') {
-const infoshanksText = `null`;
+const infoshanksText = `🏴‍☠️ 𝗘𝗠𝗢𝗧𝗜𝗢𝗡 / 𝗥𝗘𝗔𝗖𝗧𝗜𝗢𝗡𝗦 
+━━━━━━━━━━━━━━━━━━━━
+👤 *Character:* Shanks
+━━━━━━━━━━━━━━━━━━━━
+📦 *𝗔𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲 𝗠𝗼𝘃𝗲𝘀 (𝗚𝗜𝗙𝘀):*
+🗡️ @shanksdd (Divine Departure)
+
+📝 *Usage: Type the command to trigger the animation!*
+━━━━━━━━━━━━━━━━━━━━`;
 await client.sendMessage(message.from, {
 image: { url: "ANIME/CHARACTERS/ONEPIECE/shanks.jpg" },
 caption: infoshanksText
@@ -934,7 +970,16 @@ caption: infoshanksText
 }
 
 if (message.body === '@infonaruto') {
-const infonarutoText = `null`;
+const infonarutoText = `🍥 𝗘𝗠𝗢𝗧𝗜𝗢𝗡 / 𝗥𝗘𝗔𝗖𝗧𝗜𝗢𝗡𝗦 
+━━━━━━━━━━━━━━━━━━━━
+👤 *Character:* Naruto Uzumaki
+━━━━━━━━━━━━━━━━━━━━
+📦 *𝗔𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲 𝗠𝗼𝘃𝗲𝘀 (𝗚𝗜𝗙𝘀):*
+🌀 @rasengan | 🌪️ @rasenchuriken
+🔥 @kuramachakra
+
+📝 *Usage: Type the command to trigger the animation!*
+━━━━━━━━━━━━━━━━━━━━`;
 await client.sendMessage(message.from, {
 image: { url: "ANIME/CHARACTERS/OTHERS/naruto.jpg" },
 caption: infonarutoText
@@ -942,7 +987,15 @@ caption: infonarutoText
 }
 
 if (message.body === '@infosakura') {
-const infosakuraText = `null`;
+const infosakuraText = `🌸 𝗘𝗠𝗢𝗧𝗜𝗢𝗡 / 𝗥𝗘𝗔𝗖𝗧𝗜𝗢𝗡𝗦
+━━━━━━━━━━━━━━━━━━━━
+👤 *Character:* Sakura Haruno
+━━━━━━━━━━━━━━━━━━━━
+📦 *𝗔𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲 𝗠𝗼𝘃𝗲𝘀 (𝗚𝗜𝗙𝘀):*
+👊 @sakurapunch | 🌸 @sakura2
+
+📝 *Usage: Type the command to trigger the animation!*
+━━━━━━━━━━━━━━━━━━━━`;
 await client.sendMessage(message.from, {
 image: { url: "ANIME/CHARACTERS/OTHERS/sakura.jpg" },
 caption: infosakuraText
