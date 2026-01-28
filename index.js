@@ -707,6 +707,106 @@ image: { url: "ANIME/CHARACTERS/OTHERS/sakura.jpg" },
 caption: "✅ TRANSACTION COMPLETE: You really bought Sakura for 100 coins 😭😭?? You should've gambled 100 instead twin 😭🙏. Use @infosakura to see... well, to see her."
 });
             }
+
+            if (message.body === '@infoyumeko') {
+const infoyumekoText = `✨  [ 𝗠𝗬𝗧𝗛𝗜𝗖𝗔𝗟 𝗥𝗔𝗥𝗜𝗧𝗬 ]  ✨
+━━━━━━━━━━━━━━━━━━━━
+👤 *Character:* Yumeko Jabami
+🃏 *Origin:* Kakegurui
+━━━━━━━━━━━━━━━━━━━━
+🎰 *Ultimate skill - kakegurui* -  (@usekakegurui)
+📝 *𝗘𝗳𝗳𝗲𝗰𝘁:* Grants 100% Success on all gambling commands (@gamble, @slots, @coinflip).
+
+⏳ *𝗗𝘂𝗿𝗮𝘁𝗶𝗼𝗻:* 5 Minutes
+💤 *𝗖𝗼𝗼𝗹𝗱𝗼𝘄𝗻:* 24 Hours
+━━━━━━━━━━━━━━━━━━━━
+*“Let’s gamble until we go mad!”*`;
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/OTHERS/yumeko.jpg" },
+caption: infoyumekoText
+});
+}
+
+if (message.body === '@infolaw') {
+const infolawText = `✨  [ 𝗠𝗬𝗧𝗛𝗜𝗖𝗔𝗟 𝗥𝗔𝗥𝗜𝗧𝗬 ]  ✨
+━━━━━━━━━━━━━━━━━━━━
+👤 *Character:* Trafalgar Law
+🌊 *Origin:* One Piece
+━━━━━━━━━━━━━━━━━━━━
+🔄 *𝗨𝗹𝘁𝗶𝗺𝗮𝘁𝗲 𝗦𝗸𝗶𝗹𝗹:* Chambles - (@usechambles)
+📝 *𝗘𝗳𝗳𝗲𝗰𝘁:* Low balance? not a problem, swap your balance with any body on the group, this skill swaps bank + wallet balances, no one is safe.
+
+⏳ *𝗗𝘂𝗿𝗮𝘁𝗶𝗼𝗻:* Instant / 1 Use per activation
+💤 *𝗖𝗼𝗼𝗹𝗱𝗼𝘄𝗻:* 5 Hours
+━━━━━━━━━━━━━━━━━━━━
+
+Also unlocks the gifs reactions 
+@reroom and @chambles 
+
+*“ROOM 🗿”*`;
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/ONEPIECE/law.jpg" },
+caption: infolawText
+});
+}
+
+if (message.body === '@infoloki') {
+const infolokiText = `✨  [ 𝗠𝗬𝗧𝗛𝗜𝗖𝗔𝗟 𝗥𝗔𝗥𝗜𝗧𝗬 ]  ✨
+━━━━━━━━━━━━━━━━━━━━
+👤 *Character:* Loki Laufeyson
+⚡ *Origin:* Marvel Universe
+━━━━━━━━━━━━━━━━━━━━
+🎭 *𝗨𝗹𝘁𝗶𝗺𝗮𝘁𝗲 𝗦𝗸𝗶𝗹𝗹:* 𝗔𝗿𝘁 𝗼𝗳 𝗗𝗲𝗰𝗲𝗽𝘁𝗶𝗼𝗻 - (@useillusion)
+📝 *𝗘𝗳𝗳𝗲𝗰𝘁:* For a short window, every @rob you perform sends a FAKE fail message to the chat while you secretly steal 80% of the target's wallet.
+
+⏳ *𝗗𝘂𝗿𝗮𝘁𝗶𝗼𝗻:* 2 Minutes
+💤 *𝗖𝗼𝗼𝗹𝗱𝗼𝘄𝗻:* 7 Hours
+━━━━━━━━━━━━━━━━━━━━
+*“I am burdened with glorious purpose.”*`;
+await client.sendMessage(message.from, {
+image: { url: "VERSES/MARVEL/loki.jpg" },
+caption: infolokiText
+});
+}
+
+if (message.body === '@infosubzero') {
+const infosubzeroText = `✨  [ 𝗠𝗬𝗧𝗛𝗜𝗖𝗔𝗟 𝗥𝗔𝗥𝗜𝗧𝗬 ]  ✨
+━━━━━━━━━━━━━━━━━━━━
+👤 *Character:* Kuai Liang (Sub-Zero)
+🐉 *Origin:* Mortal Kombat
+━━━━━━━━━━━━━━━━━━━━
+🧊 *𝗨𝗹𝘁𝗶𝗺𝗮𝘁𝗲 𝗦𝗸𝗶𝗹𝗹:* 𝗗𝗲𝗲𝗽 𝗙𝗿𝗲𝗲𝘇𝗲 - (@useabsolutezero)
+📝 *𝗘𝗳𝗳𝗲𝗰𝘁:* Freeze a target user's account. While frozen, the target cannot @rob, @gamble, or use any shop items.
+
+⏳ *𝗗𝘂𝗿𝗮𝘁𝗶𝗼𝗻:* 25 Minutes
+💤 *𝗖𝗼𝗼𝗹𝗱𝗼𝘄𝗻:* 3 Hours
+━━━━━━━━━━━━━━━━━━━━
+*“Ice so cold it burns.”*`;
+await client.sendMessage(message.from, {
+image: { url: "VERSES/MK/subzero.jpg" },
+caption: infosubzeroText
+});
+}
+
+if (message.body === '@infosuperman') {
+const infosupermanText = `✨  [ 𝗠𝗬𝗧𝗛𝗜𝗖𝗔𝗟 𝗥𝗔𝗥𝗜𝗧𝗬 ]  ✨
+━━━━━━━━━━━━━━━━━━━━
+👤 *Character:* Superman (Clark Kent)
+🏙️ *Origin:* DC Universe
+━━━━━━━━━━━━━━━━━━━━
+🛡️ *𝗣𝗮𝘀𝘀𝗶𝘃𝗲 𝗦𝗸𝗶𝗹𝗹:* 𝗠𝗮𝗻 𝗼𝗳 𝗦𝘁𝗲𝗲𝗹 - (@manofsteelon) to activate
+📝 *𝗘𝗳𝗳𝗲𝗰𝘁:* You are completely immune to all @rob attempts. No user can steal from your wallet, regardless of their level or skills.
+
+🚫 *𝗪𝗲𝗮𝗸𝗻𝗲𝘀𝘀:* The protection is bypassed ONLY if the attacker uses *Kryptonite*.
+
+🛡️ *𝗦𝘁𝗮𝘁𝘂𝘀:* Always Active (Permanent)
+━━━━━━━━━━━━━━━━━━━━
+*“Truth, Justice, and a Better Tomorrow.”*`;
+await client.sendMessage(message.from, {
+image: { url: "VERSES/DC/superman.jpg" },
+caption: infosupermanText
+});
+}
             
         } catch (err) {
             console.log(err)
