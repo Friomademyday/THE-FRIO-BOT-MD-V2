@@ -468,6 +468,245 @@ await database.saveUser(user);
 await database.updateInventory(message.sender.id, inventory);
 reply("✅ Purchase Successful! 1 Insurance Elixir added to your inventory. Activate it for 5 minutes of 50% loss protection.");
 }
+
+            if (message.body === '@buyyumeko') {
+let user = await database.getUser(message.sender.id);
+if (user.emblems < 1000000000) return reply("❌ You need 1,000,000,000 🔮 Emblems for Yumeko Jabami.");
+if (user.characters.yumeko) return reply("✨ You already own the Queen of Games!");
+
+user.emblems -= 1000000000;
+user.characters.yumeko = true;
+await database.saveUser(user);
+
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/OTHERS/yumeko.jpg" },
+caption: "✅ TRANSACTION COMPLETE: You have acquired Yumeko Jabami. The table is set, and the stakes are life itself. Use @infoyumeko to view her reality-bending skills."
+});
+}
+
+if (message.body === '@buylaw') {
+let user = await database.getUser(message.sender.id);
+if (user.emblems < 250000) return reply("❌ You need 250,000 🔮 Emblems for Trafalgar Law.");
+if (user.characters.law) return reply("⚓ You already own the Surgeon of Death!");
+
+user.emblems -= 250000;
+user.characters.law = true;
+await database.saveUser(user);
+
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/ONEPIECE/law.jpg" },
+caption: "✅ TRANSACTION COMPLETE: Trafalgar Law has joined your crew. The operating room is open. Use @infolaw to see what Shambles can do."
+});
+}
+
+if (message.body === '@buyloki') {
+let user = await database.getUser(message.sender.id);
+if (user.emblems < 200000) return reply("❌ You need 200,000 🔮 Emblems for Loki Laufeyson.");
+if (user.characters.loki) return reply("🐍 The God of Mischief is already in your service!");
+
+user.emblems -= 200000;
+user.characters.loki = true;
+await database.saveUser(user);
+
+await client.sendMessage(message.from, {
+image: { url: "VERSES/MARVEL/loki.jpg" },
+caption: "✅ TRANSACTION COMPLETE: Loki has arrived. Prepare to master the Art of Deception. Use @infoloki to view your new tricks."
+});
+}
+
+if (message.body === '@buysubzero') {
+let user = await database.getUser(message.sender.id);
+if (user.emblems < 100000) return reply("❌ You need 100,000 🔮 Emblems for Sub-Zero.");
+if (user.characters.subzero) return reply("❄️ Sub-Zero is already part of your clan!");
+
+user.emblems -= 100000;
+user.characters.subzero = true;
+await database.saveUser(user);
+
+await client.sendMessage(message.from, {
+image: { url: "VERSES/MK/subzero.jpg" },
+caption: "✅ TRANSACTION COMPLETE: Sub-Zero acquired. Grandmaster of the Lin Kuei. Use @infosubzero to see his freezing abilities."
+});
+}
+
+if (message.body === '@buysuperman') {
+let user = await database.getUser(message.sender.id);
+if (user.emblems < 100000) return reply("❌ You need 100,000 🔮 Emblems for Superman.");
+if (user.characters.superman) return reply("🦸 The Man of Steel is already protecting your account!");
+
+user.emblems -= 100000;
+user.characters.superman = true;
+await database.saveUser(user);
+
+await client.sendMessage(message.from, {
+image: { url: "VERSES/DC/superman.jpg" },
+caption: "✅ TRANSACTION COMPLETE: You now possess the power of Superman. Justice will be served. Use @infosuperman to view your stats."
+});
+}
+
+if (message.body === '@buyironman') {
+let user = await database.getUser(message.sender.id);
+if (user.emblems < 200000) return reply("❌ You need 200,000 🔮 Emblems for Iron Man.");
+if (user.characters.ironman) return reply("🦾 Stark Industries already recognizes you as CEO!");
+
+user.emblems -= 200000;
+user.characters.ironman = true;
+await database.saveUser(user);
+
+await client.sendMessage(message.from, {
+image: { url: "VERSES/MARVEL/ironman.jpg" },
+caption: "✅ TRANSACTION COMPLETE: Suit up. Iron Man has joined your inventory. Use @infoironman to view your tech upgrades."
+});
+}
+
+if (message.body === '@buybatman') {
+let user = await database.getUser(message.sender.id);
+if (user.emblems < 150000) return reply("❌ You need 150,000 🔮 Emblems for Batman.");
+if (user.characters.batman) return reply("🦇 The Dark Knight is already watching over your account.");
+
+user.emblems -= 150000;
+user.characters.batman = true;
+await database.saveUser(user);
+
+await client.sendMessage(message.from, {
+image: { url: "VERSES/DC/batman.jpg" },
+caption: "✅ TRANSACTION COMPLETE: I am Vengeance. Batman has been acquired. Use @infobatman to see your tactical options."
+});
+}
+
+if (message.body === '@buytheflash') {
+let user = await database.getUser(message.sender.id);
+if (user.emblems < 100000) return reply("❌ You need 100,000 🔮 Emblems for The Flash.");
+if (user.characters.theflash) return reply("⚡ You're already fast enough—The Flash is owned!");
+
+user.emblems -= 100000;
+user.characters.theflash = true;
+await database.saveUser(user);
+
+await client.sendMessage(message.from, {
+image: { url: "VERSES/DC/theflash.jpg" },
+caption: "✅ TRANSACTION COMPLETE: The Speed Force is yours. Use @infotheflash to view your high-speed skills."
+});
+}
+
+if (message.body === '@buysasuke') {
+let user = await database.getUser(message.sender.id);
+if (user.emblems < 90000) return reply("❌ You need 90,000 🔮 Emblems for Sasuke.");
+if (user.characters.sasuke) return reply("👁️ The Sharingan is already yours!");
+
+user.emblems -= 90000;
+user.characters.sasuke = true;
+await database.saveUser(user);
+
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/OTHERS/sasuke.jpg" },
+caption: "✅ TRANSACTION COMPLETE: Sasuke Uchiha acquired. Use @infosasuke to view his visual prowess."
+});
+}
+
+if (message.body === '@buymadara') {
+let user = await database.getUser(message.sender.id);
+if (user.emblems < 90000) return reply("❌ You need 90,000 🔮 Emblems for Madara.");
+if (user.characters.madara) return reply("☄️ The Uchiha Legend has already been summoned!");
+
+user.emblems -= 90000;
+user.characters.madara = true;
+await database.saveUser(user);
+
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/OTHERS/madara.jpg" },
+caption: "✅ TRANSACTION COMPLETE: Madara has arrived. The world shall know true power. Use @infomadara to view his skills."
+});
+}
+
+if (message.body === '@buyluffy') {
+let user = await database.getUser(message.sender.id);
+if (user.coins < 3500000000) return reply("❌ You need 3.5 Billion 🪙 for Monkey D. Luffy.");
+if (user.characters.luffy) return reply("🍖 You're already the Captain!");
+
+user.coins -= 3500000000;
+user.characters.luffy = true;
+await database.saveUser(user);
+
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/ONEPIECE/luffy.jpg" },
+caption: "✅ TRANSACTION COMPLETE: You've recruited Luffy! He's going to be King of the Pirates. Use @infoluffy to view his abilities."
+});
+}
+
+if (message.body === '@buyzoro') {
+let user = await database.getUser(message.sender.id);
+if (user.coins < 1500000000) return reply("❌ You need 1.5 Billion 🪙 for Zoro.");
+if (user.characters.zoro) return reply("⚔️ The Greatest Swordsman is already in your crew!");
+
+user.coins -= 1500000000;
+user.characters.zoro = true;
+await database.saveUser(user);
+
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/ONEPIECE/zoro.jpg" },
+caption: "✅ TRANSACTION COMPLETE: Roronoa Zoro has joined. Watch out, he might get lost. Use @infozoro to see his sword styles."
+});
+    }
+
+            if (message.body === '@buyshanks') {
+let user = await database.getUser(message.sender.id);
+if (user.coins < 4100000000) return reply("❌ You need 4.1 Billion 🪙 for Shanks.");
+if (user.characters.shanks) return reply("🚩 One of the Four Emperors is already in your crew!");
+
+user.coins -= 4100000000;
+user.characters.shanks = true;
+await database.saveUser(user);
+
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/ONEPIECE/shanks.jpg" },
+caption: "✅ TRANSACTION COMPLETE: Red-Haired Shanks has arrived. His Haki is unmatched. Use @infoshanks to view his power."
+});
+}
+
+if (message.body === '@buynaruto') {
+let user = await database.getUser(message.sender.id);
+if (user.coins < 2200000000) return reply("❌ You need 2.2 Billion 🪙 for Naruto.");
+if (user.characters.naruto) return reply("🍥 The Seventh Hokage is already in your service!");
+
+user.coins -= 2200000000;
+user.characters.naruto = true;
+await database.saveUser(user);
+
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/OTHERS/naruto.jpg" },
+caption: "✅ TRANSACTION COMPLETE: Believe it! Naruto Uzumaki has joined you. Use @infonaruto to view his jutsu."
+});
+}
+
+if (message.body === '@buysanji') {
+let user = await database.getUser(message.sender.id);
+if (user.coins < 1100000000) return reply("❌ You need 1.1 Billion 🪙 for Sanji.");
+if (user.characters.sanji) return reply("🚬 The Vinsmoke cook is already in your kitchen!");
+
+user.coins -= 1100000000;
+user.characters.sanji = true;
+await database.saveUser(user);
+
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/ONEPIECE/sanji.jpg" },
+caption: "✅ TRANSACTION COMPLETE: Sanji joined the crew. Prepare for world-class cuisine and kicks. Use @infosanji to see his skills."
+});
+}
+            if (message.body === '@buysakura') {
+let user = await database.getUser(message.sender.id);
+if (user.coins < 100) return reply("❌ You don't even have 100 coins? That's actually impressive.");
+if (user.characters.sakura) return reply("🌸 You already own Sakura. Your inventory is now 100% more pink.");
+
+user.coins -= 100;
+user.characters.sakura = true;
+await database.saveUser(user);
+
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/OTHERS/sakura.jpg" },
+caption: "✅ TRANSACTION COMPLETE: You bought Sakura for 100 coins. She's here. Use @infosakura to see... well, to see her."
+});
+            }
             
         } catch (err) {
             console.log(err)
