@@ -1034,8 +1034,428 @@ caption: infosakuraText
         db[userId].activeSkill = null
         fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
         await conn.sendMessage(from, { text: "🃏 *Kakegurui* has timed out. The odds have returned to normal." }, { quoted: m })
-    }, 300000) // 5 Minutes
+    }, 300000) 
             }
+
+            if (body.startsWith('@usechambles')) {
+    const userId = sender
+    const now = Date.now()
+    const cooldown = 5 * 60 * 60 * 1000 
+    let victim = m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || m.message.extendedTextMessage?.contextInfo?.participant
+
+    if (!db[userId].characters?.law) {
+        return await conn.sendMessage(from, { text: "❌ You don't own Trafalgar Law!" }, { quoted: m })
+    }
+
+    if (db[userId].lawLastUsed && now - db[userId].lawLastUsed < cooldown) {
+        const remaining = cooldown - (now - db[userId].lawLastUsed)
+        const hours = Math.floor(remaining / 3600000)
+        const minutes = Math.floor((remaining % 3600000) / 60000)
+        return await conn.sendMessage(from, { text: `⏳ ROOM is recharging. Wait ${hours}h ${minutes}m.` }, { quoted: m })
+    }
+
+    if (!victim || victim === sender) {
+        return await conn.sendMessage(from, { text: "🎯 You must tag someone to use Shambles on!" }, { quoted: m })
+    }
+
+    if (!db[victim]) {
+        db[victim] = { balance: 1000, bank: 0, lastClaim: '', lastClaimExtra: '', msccount: 0, rank: 'NOOB', bonusesClaimed: [] }
+    }
+
+    let myWallet = db[userId].balance
+    let myBank = db[userId].bank
+    let victimWallet = db[victim].balance
+    let victimBank = db[victim].bank
+
+    db[userId].balance = victimWallet
+    db[userId].bank = victimBank
+    db[victim].balance = myWallet
+    db[victim].bank = myBank
+
+    db[userId].lawLastUsed = now
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+
+    await conn.sendMessage(from, { 
+        image: { url: "ANIME/CHARACTERS/ONEPIECE/law.jpeg" },
+        caption: `🔄 *SHAMBLES!* 🔄\n\n@${userId.split('@')[0]} has swapped their entire life savings with @${victim.split('@')[0]}!\n\n*“ROOM 🗿”*`,
+        mentions: [userId, victim]
+    }, { quoted: m })
+            }
+
+            if (body.startsWith('@room')) {
+    if (!db[sender].characters?.law) return
+    let victim = m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || m.message.extendedTextMessage?.contextInfo?.participant
+    if (!victim) return await conn.sendMessage(from, { text: "Tag someone to trap in your ROOM!" }, { quoted: m })
+
+    await conn.sendMessage(from, { 
+        video: { url: './ANIME/CHARACTERS/ONEPIECE/law.jpg' }, 
+        gifPlayback: true, 
+        caption: `🔵 *ROOM...*\n\n@${sender.split('@')[0]} has trapped @${victim.split('@')[0]} inside their domain!`,
+        mentions: [sender, victim]
+    }, { quoted: m })
+}
+
+if (body.startsWith('@chambles')) {
+    if (!db[sender].characters?.law) return
+    let victim = m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || m.message.extendedTextMessage?.contextInfo?.participant
+    if (!victim) return await conn.sendMessage(from, { text: "Tag someone to swap!" }, { quoted: m })
+
+    await conn.sendMessage(from, { 
+        video: { url: './BOTMEDIAS/chambles.gif' }, 
+        gifPlayback: true, 
+        caption: `🔄 *SHAMBLES!*\n\n@${sender.split('@')[0]} messed with @${victim.split('@')[0]}'s orientation!`,
+        mentions: [sender, victim]
+    }, { quoted: m })
+        }
+
+            if (body.startsWith('@useabsolutezero')) {
+    const userId = sender
+    const now = Date.now()
+    const cooldown = 3 * 60 * 60 * 1000 
+    const freezeDuration = 25 * 60 * 1000
+    let victim = m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || m.message.extendedTextMessage?.contextInfo?.participant
+
+    if (!db[userId].characters?.subzero) {
+        return await conn.sendMessage(from, { text: "❌ You don't own Sub-Zero!" }, { quoted: m })
+    }
+
+    if (db[userId].subzeroLastUsed && now - db[userId].subzeroLastUsed < cooldown) {
+        const remaining = cooldown - (now - db[userId].subzeroLastUsed)
+        const hours = Math.floor(remaining / 3600000)
+        const minutes = Math.floor((remaining % 3600000) / 60000)
+        return await conn.sendMessage(from, { text: `⏳ Your ice powers are recharging. Wait ${hours}h ${minutes}m.` }, { quoted: m })
+    }
+
+    if (!victim || victim === sender) {
+        return await conn.sendMessage(from, { text: "🎯 Tag someone to freeze!" }, { quoted: m })
+    }
+
+    if (!db[victim]) {
+        db[victim] = { balance: 1000, bank: 0, lastClaim: '', lastClaimExtra: '', msccount: 0, rank: 'NOOB', bonusesClaimed: [] }
+    }
+
+    db[victim].isFrozen = true
+    db[victim].frozenUntil = now + freezeDuration
+    db[userId].subzeroLastUsed = now
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+
+    await conn.sendMessage(from, { 
+        image: { url: "VERSES/MK/absolutezero.jpg" },
+        caption: `❄️ *DEEP FREEZE* ❄️\n\n@${userId.split('@')[0]} has frozen @${victim.split('@')[0]} for 25 minutes!\n\n🚫 *Target Restrictions:*\n- Cannot @rob\n- Cannot @gamble\n- Cannot use shop items\n\n*“Ice so cold it burns.”*`,
+        mentions: [userId, victim]
+    }, { quoted: m })
+
+    setTimeout(async () => {
+        db[victim].isFrozen = false
+        db[victim].frozenUntil = 0
+        fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+        await conn.sendMessage(from, { text: `♨️ @${victim.split('@')[0]} has thawed out. Account functions restored.`, mentions: [victim] })
+    }, freezeDuration)
+            }
+
+        if (body === '@useillusion') {
+    const userId = sender
+    const now = Date.now()
+    const cooldown = 7 * 60 * 60 * 1000 
+    const duration = 2 * 60 * 1000
+
+    if (!db[userId].characters?.loki) {
+        return await conn.sendMessage(from, { text: "❌ You don't own Loki!" }, { quoted: m })
+    }
+
+    if (db[userId].lokiLastUsed && now - db[userId].lokiLastUsed < cooldown) {
+        const remaining = cooldown - (now - db[userId].lokiLastUsed)
+        const hours = Math.floor(remaining / 3600000)
+        const minutes = Math.floor((remaining % 3600000) / 60000)
+        return await conn.sendMessage(from, { text: `⏳ Your illusions are recharging. Wait ${hours}h ${minutes}m.` }, { quoted: m })
+    }
+
+    db[userId].activeSkill = 'illusion'
+    db[userId].lokiLastUsed = now
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+
+    await conn.sendMessage(from, { 
+        image: { url: "VERSES/MARVEL/illusion.jpg" },
+        caption: `🎭 *ART OF DECEPTION* 🎭\n\n@${userId.split('@')[0]} has cast an illusion! For the next 2 minutes, their robberies will look like failures...\n\n*“I am burdened with glorious purpose.”*`,
+        mentions: [userId]
+    }, { quoted: m })
+
+    setTimeout(async () => {
+        db[userId].activeSkill = null
+        fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+        await conn.sendMessage(from, { text: "🎭 Loki's illusion has faded. You are visible once more." }, { quoted: m })
+    }, duration)
+    }
+
+            if (body === '@manofsteelon') {
+    const userId = sender
+
+    if (!db[userId].characters?.superman) {
+        return await conn.sendMessage(from, { text: "❌ You don't own Superman!" }, { quoted: m })
+    }
+
+    if (!db[userId].passives) db[userId].passives = []
+
+    if (db[userId].passives.includes('man_of_steel')) {
+        return await conn.sendMessage(from, { text: "🛡️ Man of Steel is already active." }, { quoted: m })
+    }
+
+    if (db[userId].passives.length >= 2) {
+        return await conn.sendMessage(from, { text: "🚫 Passive slots full! You can only have 2 passives active at once." }, { quoted: m })
+    }
+
+    db[userId].passives.push('man_of_steel')
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+
+    await conn.sendMessage(from, { 
+        image: { url: "VERSES/DC/manofsteel.jpg" },
+        caption: `🛡️ *MAN OF STEEL: ACTIVATED*\n\nYou are now immune to all @rob attempts 24/7.\n\n⚠️ *Weakness:* Kryptonite.`
+    }, { quoted: m })
+}
+
+if (body === '@manofsteeloff') {
+    const userId = sender
+
+    if (!db[userId].passives || !db[userId].passives.includes('man_of_steel')) {
+        return await conn.sendMessage(from, { text: "❌ Man of Steel is not currently active." }, { quoted: m })
+    }
+
+    db[userId].passives = db[userId].passives.filter(p => p !== 'man_of_steel')
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+
+    await conn.sendMessage(from, { text: "🛡️ *MAN OF STEEL: DEACTIVATED*\n\nYour passive slot has been freed." }, { quoted: m })
+        }
+
+          if (body === '@starkindustrieson') {
+    const userId = sender
+    if (!db[userId].characters?.ironman) return await conn.sendMessage(from, { text: "❌ You don't own Iron Man!" }, { quoted: m })
+    if (!db[userId].passives) db[userId].passives = []
+    if (db[userId].passives.includes('stark_industries')) return await conn.sendMessage(from, { text: "💰 Stark Industries is already running." }, { quoted: m })
+    if (db[userId].passives.length >= 2) return await conn.sendMessage(from, { text: "🚫 Passive slots full!" }, { quoted: m })
+
+    db[userId].passives.push('stark_industries')
+    db[userId].lastStarkPayout = Date.now()
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+
+    await conn.sendMessage(from, { 
+        image: { url: "VERSES/MARVEL/starkindustries.jpg" },
+        caption: `🚀 *STARK INDUSTRIES: ONLINE*\n\nSalary: 2,000,000 🪙 every 3 hours.\n\n*“I am Iron Man.”*`
+    }, { quoted: m })
+}
+
+if (body === '@starkindustriesoff') {
+    db[sender].passives = (db[sender].passives || []).filter(p => p !== 'stark_industries')
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+    await conn.sendMessage(from, { text: "🚀 *STARK INDUSTRIES: OFFLINE*" }, { quoted: m })
+        }  
+
+
+            if (body === '@wayneenterpriseson') {
+    const userId = sender
+    if (!db[userId].characters?.batman) return await conn.sendMessage(from, { text: "❌ You don't own Batman!" }, { quoted: m })
+    if (!db[userId].passives) db[userId].passives = []
+    if (db[userId].passives.includes('wayne_enterprises')) return await conn.sendMessage(from, { text: "💼 Wayne Enterprises is already active." }, { quoted: m })
+    if (db[userId].passives.length >= 2) return await conn.sendMessage(from, { text: "🚫 Passive slots full!" }, { quoted: m })
+
+    db[userId].passives.push('wayne_enterprises')
+    db[userId].lastWaynePayout = Date.now()
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+
+    await conn.sendMessage(from, { 
+        image: { url: "VERSES/DC/wayneenterprises.jpg" },
+        caption: `💼 *WAYNE ENTERPRISES: ACTIVE*\n\nCorporate Funding: 1,500,000 🪙 every 3 hours.`
+    }, { quoted: m })
+}
+
+if (body === '@wayneenterprisesoff') {
+    db[sender].passives = (db[sender].passives || []).filter(p => p !== 'wayne_enterprises')
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+    await conn.sendMessage(from, { text: "💼 *WAYNE ENTERPRISES: DEACTIVATED*" }, { quoted: m })
+}
+
+
+            if (body === '@vengeanceon') {
+    const userId = sender
+    if (!db[userId].characters?.batman) return await conn.sendMessage(from, { text: "❌ You don't own Batman!" }, { quoted: m })
+    if (!db[userId].passives) db[userId].passives = []
+    if (db[userId].passives.includes('vengeance')) return await conn.sendMessage(from, { text: "🦇 Vengeance is already on." }, { quoted: m })
+    if (db[userId].passives.length >= 2) return await conn.sendMessage(from, { text: "🚫 Passive slots full!" }, { quoted: m })
+
+    db[userId].passives.push('vengeance')
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+
+    await conn.sendMessage(from, { 
+        image: { url: "VERSES/DC/vengeance.jpg" },
+        caption: `🦇 *VENGEANCE: ACTIVATED*\n\nCriminals beware. If anyone robs you, they lose 50% of their BANK.\n\n*“I’m Vengeance.”*`
+    }, { quoted: m })
+}
+
+if (body === '@vengeanceoff') {
+    db[sender].passives = (db[sender].passives || []).filter(p => p !== 'vengeance')
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+    await conn.sendMessage(from, { text: "🦇 *VENGEANCE: DEACTIVATED*" }, { quoted: m })
+}
+
+            if (body === '@runbarry') {
+    const userId = sender
+    const now = Date.now()
+    const cooldown = 5 * 60 * 60 * 1000 
+    const speedForceDuration = 60000 
+
+    if (!db[userId].characters?.flash) {
+        return await conn.sendMessage(from, { text: "❌ You don't own The Flash!" }, { quoted: m })
+    }
+
+    if (db[userId].flashLastUsed && now - db[userId].flashLastUsed < cooldown) {
+        const remaining = cooldown - (now - db[userId].flashLastUsed)
+        const hours = Math.floor(remaining / 3600000)
+        const minutes = Math.floor((remaining % 3600000) / 60000)
+        return await conn.sendMessage(from, { text: `⏳ The Speed Force is depleted. Wait ${hours}h ${minutes}m.` }, { quoted: m })
+    }
+
+    db[userId].activeSkill = 'speedforce'
+    db[userId].flashLastUsed = now
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+
+    await conn.sendMessage(from, { 
+        image: { url: "VERSES/DC/runbarry.jpg" },
+        caption: `⚡ *SPEED FORCE ACTIVATED* ⚡\n\n@${userId.split('@')[0]} is moving faster than time! For the next 60 seconds, the *@daily* cooldown is GONE.\n\n*“Life is locomotion. If you're not moving, you're not living.”*`,
+        mentions: [userId]
+    }, { quoted: m })
+
+    setTimeout(async () => {
+        db[userId].activeSkill = null
+        fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+        await conn.sendMessage(from, { text: "⚡ *The Speed Force has faded.* Back to normal speed." }, { quoted: m })
+    }, speedForceDuration)
+            }
+
+            if (body === '@susanoon') {
+    const userId = sender
+    if (!db[userId].characters?.sasuke) return await conn.sendMessage(from, { text: "❌ You don't own Sasuke!" }, { quoted: m })
+    if (!db[userId].passives) db[userId].passives = []
+    if (db[userId].passives.includes('susanoo')) return await conn.sendMessage(from, { text: "👁️ Susanoo is already active." }, { quoted: m })
+    if (db[userId].passives.length >= 2) return await conn.sendMessage(from, { text: "🚫 Passive slots full!" }, { quoted: m })
+
+    db[userId].passives.push('susanoo')
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+
+    await conn.sendMessage(from, { 
+        image: { url: "ANIME/CHARACTERS/OTHERS/sasukesusano.jpg" },
+        caption: `👁️ *SUSANOO: ACTIVATED*\n\nThe Ethereal Warrior protects you. High chance to negate robberies.\n\n*“My only goal is in the darkness.”*`
+    }, { quoted: m })
+}
+
+if (body === '@susanooff') {
+    db[sender].passives = (db[sender].passives || []).filter(p => p !== 'susanoo')
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+    await conn.sendMessage(from, { text: "👁️ *SUSANOO: DEACTIVATED*" }, { quoted: m })
+}
+
+            if (body === '@perfectsusanoon') {
+    const userId = sender
+    if (!db[userId].characters?.madara) return await conn.sendMessage(from, { text: "❌ You don't own Madara!" }, { quoted: m })
+    if (!db[userId].passives) db[userId].passives = []
+    if (db[userId].passives.includes('perfect_susanoo')) return await conn.sendMessage(from, { text: "☄️ Perfect Susanoo is already active." }, { quoted: m })
+    if (db[userId].passives.length >= 2) return await conn.sendMessage(from, { text: "🚫 Passive slots full!" }, { quoted: m })
+
+    db[userId].passives.push('perfect_susanoo')
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+
+    await conn.sendMessage(from, { 
+        image: { url: "ANIME/CHARACTERS/OTHERS/madarasusano.jpg" },
+        caption: `☄️ *PERFECT SUSANOO: is under your control. The ultimate defense is online.\n\n*“Wake up to reality!”*`
+    }, { quoted: m })
+}
+
+if (body === '@perfectsusanooff') {
+    db[sender].passives = (db[sender].passives || []).filter(p => p !== 'perfect_susanoo')
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+    await conn.sendMessage(from, { text: "☄️ *PERFECT SUSANOO: DEACTIVATED*" }, { quoted: m })
+                     }
+
+                 const luffyMoves = ['pistol', 'redhawk', 'blackmamba', 'gatling', 'jetculverin', 'konggun', 'kaminari']
+luffyMoves.forEach(move => {
+    if (body.startsWith(`@${move}`)) {
+        let victim = m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || m.message.extendedTextMessage?.contextInfo?.participant
+        if (!victim) return await conn.sendMessage(from, { text: "Tag someone to attack!" }, { quoted: m })
+        
+        await conn.sendMessage(from, { 
+            video: { url: `./ANIME/ANIME-ACTIONS/ONEPIECE/LUFFY/${move.toUpperCase()}.gif` }, 
+            gifPlayback: true, 
+            caption: `👊 *LUFFY:* @${sender.split('@')[0]} used *${move.toUpperCase()}* on @${victim.split('@')[0]}!`,
+            mentions: [sender, victim]
+        }, { quoted: m })
+    }
+})
+
+            const zoroMoves = ['onigiri', 'shishisonson', 'dragontwister', 'ashura', 'kingofhell']
+zoroMoves.forEach(move => {
+    if (body.startsWith(`@${move}`)) {
+        let victim = m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || m.message.extendedTextMessage?.contextInfo?.participant
+        if (!victim) return await conn.sendMessage(from, { text: "Tag someone to slice!" }, { quoted: m })
+        
+        await conn.sendMessage(from, { 
+            video: { url: `./ANIME/ANIME-ACTIONS/ONEPIECE/ZORO/${move.toUpperCase()}.gif` }, 
+            gifPlayback: true, 
+            caption: `⚔️ *ZORO:* @${sender.split('@')[0]} unleashed *${move.toUpperCase()}* against @${victim.split('@')[0]}!`,
+            mentions: [sender, victim]
+        }, { quoted: m })
+    }
+})
+
+            const sanjiMoves = ['diablejambe', 'ifritjambe', 'spectre', 'venaison']
+sanjiMoves.forEach(move => {
+    if (body.startsWith(`@${move}`)) {
+        let victim = m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || m.message.extendedTextMessage?.contextInfo?.participant
+        if (!victim) return await conn.sendMessage(from, { text: "Tag someone to kick!" }, { quoted: m })
+        
+        await conn.sendMessage(from, { 
+            video: { url: `./ANIME/ANIME-ACTIONS/ONEPIECE/SANJI/${move.toUpperCase()}.gif` }, 
+            gifPlayback: true, 
+            caption: `🦵 *SANJI:* @${sender.split('@')[0]} landed a *${move.toUpperCase()}* on @${victim.split('@')[0]}!`,
+            mentions: [sender, victim]
+        }, { quoted: m })
+    }
+})
+
+            const narutoMoves = ['rasengan', 'rasenchuriken', 'kuramachakra']
+narutoMoves.forEach(move => {
+    if (body.startsWith(`@${move}`)) {
+        let victim = m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || m.message.extendedTextMessage?.contextInfo?.participant
+        if (!victim) return await conn.sendMessage(from, { text: "Tag someone for your Jutsu!" }, { quoted: m })
+        
+        await conn.sendMessage(from, { 
+            video: { url: `./ANIME/ANIME-ACTIONS/NARUTO/${move.toUpperCase()}.gif` }, 
+            gifPlayback: true, 
+            caption: `🍥 *NARUTO:* @${sender.split('@')[0]} hit @${victim.split('@')[0]} with a *${move.toUpperCase()}*!`,
+            mentions: [sender, victim]
+        }, { quoted: m })
+    }
+})
+
+            if (body.startsWith('@shanksdd')) {
+    let victim = m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || m.message.extendedTextMessage?.contextInfo?.participant
+    if (!victim) return await conn.sendMessage(from, { text: "Tag a rival!" }, { quoted: m })
+    await conn.sendMessage(from, { 
+        video: { url: './ANIME/ANIME-ACTIONS/ONEPIECE/SHANKS/shanksdd.gif' }, 
+        gifPlayback: true, 
+        caption: `🗡️ *SHANKS:* @${sender.split('@')[0]} used *DIVINE DEPARTURE* on @${victim.split('@')[0]}!`,
+        mentions: [sender, victim]
+    }, { quoted: m })
+}
+
+if (body.startsWith('@sakurapunch') || body.startsWith('@sakura2')) {
+    const move = body.includes('punch') ? 'SAKURAPUNCH' : 'SAKURA2'
+    let victim = m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || m.message.extendedTextMessage?.contextInfo?.participant
+    if (!victim) return await conn.sendMessage(from, { text: "Tag someone to smash!" }, { quoted: m })
+    await conn.sendMessage(from, { 
+        video: { url: `./ANIME/ANIME-ACTIONS/NARUTO/${move}.gif` }, 
+        gifPlayback: true, 
+        caption: `🌸 *SAKURA:* @${sender.split('@')[0]} pummeled @${victim.split('@')[0]}!`,
+        mentions: [sender, victim]
+    }, { quoted: m })
+}
             
         } catch (err) {
             console.log(err)
