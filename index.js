@@ -807,6 +807,147 @@ image: { url: "VERSES/DC/superman.jpg" },
 caption: infosupermanText
 });
 }
+            if (message.body === '@infoironman') {
+const infoironmanText = `🏆 [ 𝗟𝗘𝗚𝗘𝗡𝗗𝗔𝗥𝗬 𝗥𝗔𝗥𝗜𝗧𝗬 ] 🏆
+━━━━━━━━━━━━━━━━━━━━
+👤 *Character:* Tony Stark (Iron Man)
+🚀 *Origin:* Marvel Universe
+━━━━━━━━━━━━━━━━━━━━
+💰 *𝗣𝗮𝘀𝘀𝗶𝘃𝗲 𝗦𝗸𝗶𝗹𝗹:* 𝗦𝘁𝗮𝗿𝗸 𝗜𝗻𝗱𝘂𝘀𝘁𝗿𝗶𝗲𝘀
+📝 *𝗘𝗳𝗳𝗲𝗰𝘁:* Automated revenue stream. Once activate it with @starkindustrieson, you receive a salary of 2,000,000 🪙 every 3 hours.
+
+🛡️ *𝗦𝘁𝗮𝘁𝘂𝘀:* Permanent Income
+━━━━━━━━━━━━━━━━━━━━
+*“I am Iron Man.”*`;
+await client.sendMessage(message.from, {
+image: { url: "VERSES/MARVEL/ironman.jpg" },
+caption: infoironmanText
+});
+}
+
+if (message.body === '@infobatman') {
+const infobatmanText = `🏆 [ 𝗟𝗘𝗚𝗘𝗡𝗗𝗔𝗥𝗬 𝗥𝗔𝗥𝗜𝗧𝗬 ] 🏆
+━━━━━━━━━━━━━━━━━━━━
+👤 *Character:* Frio 🗿 I'm Batman
+🌃 *Origin:* DC Universe
+━━━━━━━━━━━━━━━━━━━━
+🦇 *𝗣𝗮𝘀𝘀𝗶𝘃𝗲 𝗦𝗸𝗶𝗹𝗹 𝟭:* 𝗩𝗲𝗻𝗴𝗲𝗮𝗻𝗰𝗲
+📝 *𝗘𝗳𝗳𝗲𝗰𝘁:* Criminals beware. If anyone attempts to @rob you, the bot automatically drains 50% of the attacker's BANK balance and transfers it to you.. for justice!🗿
+
+💼 *𝗣𝗮𝘀𝘀𝗶𝘃𝗲 𝗦𝗸𝗶𝗹𝗹 𝟮:* 𝗪𝗮𝘆𝗻𝗲 𝗘𝗻𝘁𝗲𝗿𝗽𝗿𝗶𝘀𝗲𝘀
+📝 *𝗘𝗳𝗳𝗲𝗰𝘁:* Corporate funding. Once activated with @wayneenterpriseson, you receive a salary of 1,500,000 🪙 every 3 hours.
+
+🛡️ *𝗦𝘁𝗮𝘁𝘂𝘀:* Always Active / Passive Income
+━━━━━━━━━━━━━━━━━━━━
+*“I’m Vengeance.”*`;
+await client.sendMessage(message.from, {
+image: { url: "VERSES/DC/batman.jpg" },
+caption: infobatmanText
+});
+}
+
+if (message.body === '@infotheflash') {
+const infotheflashText = `🏆 [ 𝗟𝗘𝗚𝗘𝗡𝗗𝗔𝗥𝗬 𝗥𝗔𝗥𝗜𝗧𝗬 ] 🏆
+━━━━━━━━━━━━━━━━━━━━
+👤 *Character:* Barry Allen (The Flash)
+⚡ *Origin:* DC Universe
+━━━━━━━━━━━━━━━━━━━━
+🏃‍♂️ *𝗨𝗹𝘁𝗶𝗺𝗮𝘁𝗲 𝗦𝗸𝗶𝗹𝗹:* @𝗿𝘂𝗻𝗯𝗮𝗿𝗿𝘆
+📝 *𝗘𝗳𝗳𝗲𝗰𝘁:* Enter the Speed Force. For 60 seconds, the 24-hour cooldown on @daily is completely REMOVED. Claim as much as your fingers can type!
+
+⏳ *𝗗𝘂𝗿𝗮𝘁𝗶𝗼𝗻:* 1 Minute
+💤 *𝗖𝗼𝗼𝗹𝗱𝗼𝘄𝗻:* 5 Hours
+━━━━━━━━━━━━━━━━━━━━
+*“Life is locomotion. If you're not moving, you're not living.”*`;
+await client.sendMessage(message.from, {
+image: { url: "VERSES/DC/theflash.jpg" },
+caption: infotheflashText
+});
+}
+
+if (message.body === '@infosasuke') {
+const infosasukeText = `🏆 [ 𝗟𝗘𝗚𝗘𝗡𝗗𝗔𝗥𝗬 𝗥𝗔𝗥𝗜𝗧𝗬 ] 🏆
+━━━━━━━━━━━━━━━━━━━━
+👤 *Character:* Sasuke Uchiha
+👁️ *Origin:* Naruto Shippuden
+━━━━━━━━━━━━━━━━━━━━
+💀 *𝗣𝗮𝘀𝘀𝗶𝘃𝗲 𝗦𝗸𝗶𝗹𝗹:* 𝗦𝘂𝘀𝗮𝗻𝗼𝗼 - (@susanoon)
+📝 *𝗘𝗳𝗳𝗲𝗰𝘁:* An ethereal warrior protects you. When someone tries to @rob you, Susanoo has a high chance to manifest and block the attack completely.
+
+🛡️ *𝗦𝘁𝗮𝘁𝘂𝘀:* Active (May flicker/wear off during combat)
+━━━━━━━━━━━━━━━━━━━━
+*“I have long since closed my eyes... my only goal is in the darkness.”*`;
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/OTHERS/sasuke.jpg" },
+caption: infosasukeText
+});
+}
+
+if (message.body === '@infomadara') {
+const infomadaraText = `🏆 [ 𝗟𝗘𝗚𝗘𝗡𝗗𝗔𝗥𝗬 𝗥𝗔𝗥𝗜𝗧𝗬 ] 🏆
+━━━━━━━━━━━━━━━━━━━━
+👤 *Character:* Madara Uchiha
+☄️ *Origin:* Naruto Shippuden
+━━━━━━━━━━━━━━━━━━━━
+💀 *𝗣𝗮𝘀𝘀𝗶𝘃𝗲 𝗦𝗸𝗶𝗹𝗹:* 𝗣𝗲𝗿𝗳𝗲𝗰𝘁 𝗦𝘂𝘀𝗮𝗻𝗼𝗼
+📝 *𝗘𝗳𝗳𝗲𝗰𝘁:* The ultimate defense. Similar to Sasuke, it provides a massive chance to negate all @rob attempts. No Kryptonite can break this—only luck.
+
+🛡️ *𝗦𝘁𝗮𝘁𝘂𝘀:* Active (Higher block rate than Sasuke)
+━━━━━━━━━━━━━━━━━━━━
+*“Wake up to reality! Nothing ever goes as planned in this accursed world.”*`;
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/OTHERS/madara.jpg" },
+caption: infomadaraText
+});
+}
+
+if (message.body === '@infoluffy') {
+const infoluffyText = `null`;
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/ONEPIECE/luffy.jpg" },
+caption: infoluffyText
+});
+}
+
+if (message.body === '@infozoro') {
+const infozoroText = `null`;
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/ONEPIECE/zoro.jpg" },
+caption: infozoroText
+});
+}
+
+if (message.body === '@infosanji') {
+const infosanjiText = `null`;
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/ONEPIECE/sanji.jpg" },
+caption: infosanjiText
+});
+}
+
+if (message.body === '@infoshanks') {
+const infoshanksText = `null`;
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/ONEPIECE/shanks.jpg" },
+caption: infoshanksText
+});
+}
+
+if (message.body === '@infonaruto') {
+const infonarutoText = `null`;
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/OTHERS/naruto.jpg" },
+caption: infonarutoText
+});
+}
+
+if (message.body === '@infosakura') {
+const infosakuraText = `null`;
+await client.sendMessage(message.from, {
+image: { url: "ANIME/CHARACTERS/OTHERS/sakura.jpg" },
+caption: infosakuraText
+});
+}
             
         } catch (err) {
             console.log(err)
