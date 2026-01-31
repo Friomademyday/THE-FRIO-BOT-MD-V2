@@ -1346,6 +1346,38 @@ if (body === '@vengeanceoff') {
     }, { quoted: m })
 }
 
+            if (body.startsWith('@convert')) {
+    const args = body.split(' ')
+    const amountStr = args[1]
+    
+    if (!amountStr) return await conn.sendMessage(from, { text: '❌ Please specify the amount of coins to convert! Example: *@convert 100000*' }, { quoted: m })
+    
+    let amountToConvert = parseInt(amountStr)
+    
+    if (isNaN(amountToConvert) || amountToConvert <= 0) {
+        return await conn.sendMessage(from, { text: '❌ Please enter a valid number.' }, { quoted: m })
+    }
+
+    if (amountToConvert % 100000 !== 0) {
+        return await conn.sendMessage(from, { text: '❌ Invalid amount! You can only convert in multiples of 100,000.\n\nExamples:\n💰 100,000 🪙 = 1 💠\n💰 200,000 🪙 = 2 💠\n💰 500,000 🪙 = 5 💠' }, { quoted: m })
+    }
+
+    if (db[sender].coins < amountToConvert) {
+        return await conn.sendMessage(from, { text: `❌ Insufficient coins! You need ${amountToConvert.toLocaleString()} 🪙 but you only have ${db[sender].coins.toLocaleString()} 🪙.` }, { quoted: m })
+    }
+
+    let emblemsGained = amountToConvert / 100000
+
+    db[sender].coins -= amountToConvert
+    db[sender].emblems = (db[sender].emblems || 0) + emblemsGained
+    
+    saveDb()
+
+    await conn.sendMessage(from, { 
+        text: `💠 *CONVERSION SUCCESSFUL* 💠\n\n📉 *Coins Deducted:* ${amountToConvert.toLocaleString()} 🪙\n📈 *Emblems Received:* ${emblemsGained.toLocaleString()} 💠\n\nYour emblems are safely stored in your bank wallet.` 
+    }, { quoted: m })
+                          }
+
 
             if (body.startsWith('@deposit')) {
     const args = body.split(' ')
@@ -1358,14 +1390,18 @@ if (body === '@vengeanceoff') {
     if (isNaN(val) || val <= 0) return await conn.sendMessage(from, { text: '❌ Provide a valid number or "all".' }, { quoted: m })
     if (db[sender].balance < val) return await conn.sendMessage(from, { text: `❌ You only have ${db[sender].balance.toLocaleString()} 🪙 in your wallet.` }, { quoted: m })
 
-    let tax = Math.floor(val * 0.10)
+    let taxRate = db[sender].books?.bfd ? 0.05 : 0.10
+    let tax = Math.floor(val * taxRate)
     let amountToBank = val - tax
 
     db[sender].balance -= val
     db[sender].bank = (db[sender].bank || 0) + amountToBank
     
-    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
-    await conn.sendMessage(from, { text: `🏦 *DEPOSIT SUCCESSFUL*\n\n💰 *Total Deducted:* ${val.toLocaleString()} 🪙\n📈 *Added to Bank:* ${amountToBank.toLocaleString()} 🪙\n💸 *Transaction Fee (10%):* ${tax.toLocaleString()} 🪙` }, { quoted: m })
+    saveDb()
+
+    await conn.sendMessage(from, { 
+        text: `🏦 *DEPOSIT SUCCESSFUL*\n\n💰 *Total From Wallet:* ${val.toLocaleString()} 🪙\n📈 *Added to Bank:* ${amountToBank.toLocaleString()} 🪙\n💸 *Tax (${taxRate * 100}%):* ${tax.toLocaleString()} 🪙${db[sender].books?.bfd ? '\n📘 *BFD Discount Applied!*' : ''}` 
+    }, { quoted: m })
 }
 
 if (body.startsWith('@withdraw')) {
@@ -1379,15 +1415,20 @@ if (body.startsWith('@withdraw')) {
     if (isNaN(val) || val <= 0) return await conn.sendMessage(from, { text: '❌ Provide a valid number or "all".' }, { quoted: m })
     if ((db[sender].bank || 0) < val) return await conn.sendMessage(from, { text: `❌ You only have ${db[sender].bank.toLocaleString()} 🪙 in your bank.` }, { quoted: m })
 
-    let tax = Math.floor(val * 0.10)
+    let taxRate = db[sender].books?.bfd ? 0.05 : 0.10
+    let tax = Math.floor(val * taxRate)
     let amountToWallet = val - tax
 
     db[sender].bank -= val
     db[sender].balance = (db[sender].balance || 0) + amountToWallet
     
-    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
-    await conn.sendMessage(from, { text: `📤 *WITHDRAWAL SUCCESSFUL*\n\n🏦 *Taken from Bank:* ${val.toLocaleString()} 🪙\n👛 *Added to Wallet:* ${amountToWallet.toLocaleString()} 🪙\n💸 *Transaction Fee (10%):* ${tax.toLocaleString()} 🪙` }, { quoted: m })
+    saveDb()
+
+    await conn.sendMessage(from, { 
+        text: `📤 *WITHDRAWAL SUCCESSFUL*\n\n🏦 *Taken from Bank:* ${val.toLocaleString()} 🪙\n👛 *Added to Wallet:* ${amountToWallet.toLocaleString()} 🪙\n💸 *Tax (${taxRate * 100}%):* ${tax.toLocaleString()} 🪙${db[sender].books?.bfd ? '\n📘 *BFD Discount Applied!*' : ''}` 
+    }, { quoted: m })
         }
+            
 
             if (body.startsWith('@balance')) {
     let user = m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || m.message.extendedTextMessage?.contextInfo?.participant || sender
@@ -1423,6 +1464,71 @@ if (body.startsWith('@bank')) {
         mentions: [sender]
     }, { quoted: m })
 }
+
+
+
+        if (body === '@daily') {
+    const userId = sender
+    const now = Date.now()
+    const dailyCooldown = 24 * 60 * 60 * 1000
+    const lastClaim = db[userId].lastClaim ? parseInt(db[userId].lastClaim) : 0
+
+    if (db[userId].activeSkill === 'speedforce') {
+        db[userId].coins = (db[userId].coins || 0) + 10000
+        saveDb()
+        return await conn.sendMessage(from, { text: `⚡ *SPEED FORCE DAILY* ⚡\n\n💰 +10,000 Coins added!\nCooldown bypassed.` }, { quoted: m })
+    }
+
+    if (now - lastClaim < dailyCooldown) {
+        const remaining = dailyCooldown - (now - lastClaim)
+        const hours = Math.floor(remaining / 3600000)
+        const minutes = Math.floor((remaining % 3600000) / 60000)
+        return await conn.sendMessage(from, { text: `🕒 Wait ${hours}h ${minutes}m for your next Daily reward.` }, { quoted: m })
+    }
+
+    db[userId].coins = (db[userId].coins || 0) + 10000
+    db[userId].lastClaim = now.toString()
+    saveDb()
+
+    await conn.sendMessage(from, { 
+        image: { url: './BOTMEDIAS/daily.jpg' },
+        caption: `🎁 *DAILY REWARD* 🎁\n\n💰 You received *10,000* Coins!\n\n*Current Wallet:* ${(db[userId].coins).toLocaleString()} 🪙` 
+    }, { quoted: m })
+        }
+
+            
+            if (body === '@claim') {
+    const userId = sender
+    const now = Date.now()
+    const claimCooldown = 24 * 60 * 60 * 1000
+    const lastClaimExtra = db[userId].lastClaimExtra ? parseInt(db[userId].lastClaimExtra) : 0
+    let randomReward = Math.floor(Math.random() * (40000 - 10000 + 1)) + 10000
+
+    if (db[userId].activeSkill === 'speedforce') {
+        db[userId].coins = (db[userId].coins || 0) + randomReward
+        saveDb()
+        return await conn.sendMessage(from, { text: `⚡ *SPEED FORCE CLAIM* ⚡\n\n💰 +${randomReward.toLocaleString()} Coins added!\nSpam detected!` }, { quoted: m })
+    }
+
+    if (now - lastClaimExtra < claimCooldown) {
+        const remaining = claimCooldown - (now - lastClaimExtra)
+        const hours = Math.floor(remaining / 3600000)
+        const minutes = Math.floor((remaining % 3600000) / 60000)
+        return await conn.sendMessage(from, { text: `⏳ Your extra claim is cooling down. Return in ${hours}h ${minutes}m.` }, { quoted: m })
+    }
+
+    db[userId].coins = (db[userId].coins || 0) + randomReward
+    db[userId].lastClaimExtra = now.toString()
+    saveDb()
+
+    await conn.sendMessage(from, { 
+        image: { url: './BOTMEDIAS/claim.jpg' },
+        caption: `🎟️ *EXTRA CLAIM* 🎟️\n\n💰 Luck was on your side! You claimed *${randomReward.toLocaleString()}* Coins!\n\n*Current Wallet:* ${(db[userId].coins).toLocaleString()} 🪙` 
+    }, { quoted: m })
+            }
+
+
+            
 
 if (body.startsWith('@lb')) {
     let board = Object.keys(db)
