@@ -1378,6 +1378,144 @@ if (body === '@vengeanceoff') {
     }, { quoted: m })
                           }
 
+                if (body.startsWith('@highrob')) {
+    let highTarget = m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || m.message.extendedTextMessage?.contextInfo?.participant
+    
+    if (!highTarget) return await conn.sendMessage(from, { text: '❌ You must tag or reply to someone to attempt a High Stakes robbery!' }, { quoted: m })
+    if (highTarget === sender) return await conn.sendMessage(from, { text: '❌ You cannot rob yourself.' }, { quoted: m })
+    
+    if ((db[sender].coins || 0) < 70000) {
+        return await conn.sendMessage(from, { text: '❌ You need at least 70,000 🪙 in your wallet to attempt a High Stakes robbery. You aren\'t "high stakes" enough yet!' }, { quoted: m })
+    }
+
+    if (!db[highTarget] || (db[highTarget].coins || 0) < 100000) {
+        return await conn.sendMessage(from, { text: '❌ This target is too poor for a High Stakes robbery. They need at least 100,000 🪙 in their wallet.' }, { quoted: m })
+    }
+
+    let highStakesAmount = Math.floor(Math.random() * (100000 - 40000 + 1)) + 40000
+    if (highStakesAmount > (db[highTarget].coins || 0)) highStakesAmount = db[highTarget].coins
+
+    let highSuccessRoll = Math.random()
+    let isHighSuccess = false
+
+    if (highStakesAmount > 80000) {
+        if (highSuccessRoll <= 0.10) isHighSuccess = true
+    } else {
+        if (highSuccessRoll <= 0.25) isHighSuccess = true
+    }
+
+    if (isHighSuccess) {
+        db[sender].coins = (db[sender].coins || 0) + highStakesAmount
+        db[highTarget].coins -= highStakesAmount
+        saveDb()
+
+        await conn.sendMessage(from, { 
+            text: `🥷 *HIGH STAKES SUCCESS* 🥷\n\n🎯 *Target:* @${highTarget.split('@')[0]}\n💰 *Stolen:* ${highStakesAmount.toLocaleString()} 🪙\n\nYou managed to evade the authorities and made off with the loot!`, 
+            mentions: [highTarget] 
+        }, { quoted: m })
+    } else {
+        let highFinePercent = (Math.floor(Math.random() * (75 - 55 + 1)) + 55) / 100
+        let highFineAmount = Math.floor((db[sender].coins || 0) * highFinePercent)
+        
+        db[sender].coins -= highFineAmount
+        if (db[sender].coins < 0) db[sender].coins = 0
+        saveDb()
+
+        await conn.sendMessage(from, { 
+            text: `🚨 *BUSTED BY THE AUTHORITIES* 🚨\n\n@${sender.split('@')[0]}, you were caught trying to rob @${highTarget.split('@')[0]}!\n\n💸 *Fine:* ${highFineAmount.toLocaleString()} 🪙 (${(highFinePercent * 100).toFixed(0)}% of your wallet)`,
+            mentions: [sender, highTarget]
+        }, { quoted: m })
+    }
+                }
+
+            if (body.startsWith('@slot')) {
+    const args = body.split(' ')
+    const amountStr = args[1]
+    
+    if (!amountStr) return await conn.sendMessage(from, { text: '❌ Specify an amount for the slots! Example: *@slot 1000*' }, { quoted: m })
+    
+    let slotBet = parseInt(amountStr)
+    
+    if (isNaN(slotBet) || slotBet <= 0) return await conn.sendMessage(from, { text: '❌ Enter a valid number.' }, { quoted: m })
+    if (db[sender].coins < slotBet) return await conn.sendMessage(from, { text: `❌ Insufficient funds!` }, { quoted: m })
+
+    const emojis = ["🍎", "🍋", "🍒", "💎", "🔔", "⭐"]
+    let isYumekoActive = db[sender].activeSkill === 'kakegurui'
+    
+    let a, b, c
+    if (isYumekoActive) {
+        let winEmoji = emojis[Math.floor(Math.random() * emojis.length)]
+        a = winEmoji
+        b = winEmoji
+        c = winEmoji
+    } else {
+        a = emojis[Math.floor(Math.random() * emojis.length)]
+        b = emojis[Math.floor(Math.random() * emojis.length)]
+        c = emojis[Math.floor(Math.random() * emojis.length)]
+    }
+
+    let slotResult = `🎰 *SLOT MACHINE* 🎰\n\n[ ${a} | ${b} | ${c} ]\n\n`
+    
+    if (a === b && b === c) {
+        let jackpot = slotBet * 3
+        db[sender].coins += jackpot
+        slotResult += `🎉 *JACKPOT!* You won ${jackpot.toLocaleString()} 🪙!`
+        if (isYumekoActive) slotResult += `\n✨ *Kakegurui Luck!*`
+    } else {
+        db[sender].coins -= slotBet
+        slotResult += `❌ *LOST!* You lost ${slotBet.toLocaleString()} 🪙.`
+    }
+
+    saveDb()
+    await conn.sendMessage(from, { text: slotResult }, { quoted: m })
+            }
+
+            if (body.startsWith('@gamble')) {
+    const args = body.split(' ')
+    const gambleAmount = parseInt(args[1])
+    const userId = sender
+    let currentBalance = db[userId].coins || 0
+
+    if (isNaN(gambleAmount) || gambleAmount <= 0) {
+        return await conn.sendMessage(from, { text: "Please specify a valid amount to gamble. Example: *@gamble 500*" }, { quoted: m })
+    }
+
+    if (gambleAmount > currentBalance) {
+        return await conn.sendMessage(from, { text: `❌ You don't have enough! Your balance is ${currentBalance.toLocaleString()} 🪙.` }, { quoted: m })
+    }
+
+    let isYumekoActive = db[userId].activeSkill === 'kakegurui'
+    let gambleResult = (isYumekoActive || Math.random() < 0.5) ? "win" : "lose"
+    
+    if (gambleResult === "win") {
+        db[userId].coins += gambleAmount
+        saveDb()
+        
+        let winMsg = `🎰 *KAKEGURUI!!* ✅\n\n`
+        winMsg += `✨ *Outcome:* YOU WON!\n`
+        winMsg += `💰 *New Balance:* ${db[userId].coins.toLocaleString()} 🪙\n\n`
+        winMsg += isYumekoActive ? `🎰 *Yumeko Jabami dictates the house!*` : `*“Let’s gamble until we go mad!”*`
+        
+        await conn.sendMessage(from, { text: winMsg }, { quoted: m })
+    } else {
+        db[userId].coins -= gambleAmount
+        
+        if (!gdb[from]) gdb[from] = { antilink: false, jackpot: 0 }
+        gdb[from].jackpot = (gdb[from].jackpot || 0) + gambleAmount
+        
+        saveDb()
+        fs.writeFileSync('./groupData.json', JSON.stringify(gdb, null, 2))
+        
+        let loseMsg = `🎰 *KAKEGURUI!!* ❌\n\n`
+        loseMsg += `💀 *Outcome:* YOU LOST!\n`
+        loseMsg += `💸 *Lost:* ${gambleAmount.toLocaleString()} 🪙\n`
+        loseMsg += `🏦 *Note:* Your losses moved to the Group Jackpot.\n\n`
+        loseMsg += `*Lmao you ain't Yumeko Jabami's twin* 😭💔`
+        
+        await conn.sendMessage(from, { text: loseMsg }, { quoted: m })
+    }
+            }
+
 
             if (body.startsWith('@deposit')) {
     const args = body.split(' ')
