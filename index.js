@@ -1346,6 +1346,93 @@ if (body === '@vengeanceoff') {
     }, { quoted: m })
 }
 
+
+            if (body.startsWith('@deposit')) {
+    const args = body.split(' ')
+    const amountStr = args[1]
+    
+    if (!amountStr) return await conn.sendMessage(from, { text: '❌ Please specify an amount! Example: *@deposit 500* or *@deposit all*' }, { quoted: m })
+    
+    let val = amountStr === 'all' ? (db[sender].balance || 0) : parseInt(amountStr)
+    
+    if (isNaN(val) || val <= 0) return await conn.sendMessage(from, { text: '❌ Provide a valid number or "all".' }, { quoted: m })
+    if (db[sender].balance < val) return await conn.sendMessage(from, { text: `❌ You only have ${db[sender].balance.toLocaleString()} 🪙 in your wallet.` }, { quoted: m })
+
+    let tax = Math.floor(val * 0.10)
+    let amountToBank = val - tax
+
+    db[sender].balance -= val
+    db[sender].bank = (db[sender].bank || 0) + amountToBank
+    
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+    await conn.sendMessage(from, { text: `🏦 *DEPOSIT SUCCESSFUL*\n\n💰 *Total Deducted:* ${val.toLocaleString()} 🪙\n📈 *Added to Bank:* ${amountToBank.toLocaleString()} 🪙\n💸 *Transaction Fee (10%):* ${tax.toLocaleString()} 🪙` }, { quoted: m })
+}
+
+if (body.startsWith('@withdraw')) {
+    const args = body.split(' ')
+    const amountStr = args[1]
+    
+    if (!amountStr) return await conn.sendMessage(from, { text: '❌ Please specify an amount! Example: *@withdraw 500* or *@withdraw all*' }, { quoted: m })
+    
+    let val = amountStr === 'all' ? (db[sender].bank || 0) : parseInt(amountStr)
+    
+    if (isNaN(val) || val <= 0) return await conn.sendMessage(from, { text: '❌ Provide a valid number or "all".' }, { quoted: m })
+    if ((db[sender].bank || 0) < val) return await conn.sendMessage(from, { text: `❌ You only have ${db[sender].bank.toLocaleString()} 🪙 in your bank.` }, { quoted: m })
+
+    let tax = Math.floor(val * 0.10)
+    let amountToWallet = val - tax
+
+    db[sender].bank -= val
+    db[sender].balance = (db[sender].balance || 0) + amountToWallet
+    
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+    await conn.sendMessage(from, { text: `📤 *WITHDRAWAL SUCCESSFUL*\n\n🏦 *Taken from Bank:* ${val.toLocaleString()} 🪙\n👛 *Added to Wallet:* ${amountToWallet.toLocaleString()} 🪙\n💸 *Transaction Fee (10%):* ${tax.toLocaleString()} 🪙` }, { quoted: m })
+        }
+
+if (body.startsWith('@lb')) {
+    let board = Object.keys(db)
+        .filter(id => id !== botNumber)
+        .map(id => ({ id, total: (db[id].balance || 0) + (db[id].bank || 0) }))
+        .sort((a, b) => b.total - a.total)
+        .slice(0, 10)
+    
+    let text = `🏆 *THE-FRiO-BOT-v2 LEADERBOARD*\n\n`
+    board.forEach((user, i) => {
+        let medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '👤'
+        text += `${medal} ${i + 1}. @${user.id.split('@')[0]} - ${user.total.toLocaleString()} 🪙\n`
+    })
+    
+    await conn.sendMessage(from, { text, mentions: board.map(u => u.id) }, { quoted: m })
+}
+
+if (body.startsWith('@give')) {
+    let user = m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || m.message.extendedTextMessage?.contextInfo?.participant
+    const args = body.split(' ')
+    let amount = parseInt(args[args.length - 1])
+
+    if (!user) return await conn.sendMessage(from, { text: '❌ You must tag someone or reply to their message to give coins!' }, { quoted: m })
+    if (user === sender) return await conn.sendMessage(from, { text: '❌ You cannot give coins to yourself.' }, { quoted: m })
+    if (isNaN(amount) || amount <= 0) return await conn.sendMessage(from, { text: '❌ Specify a valid amount! Example: @give @user 5000' }, { quoted: m })
+    
+    if (db[sender].balance < amount) {
+        return await conn.sendMessage(from, { text: `❌ Insufficient funds! You only have ${db[sender].balance.toLocaleString()} 🪙 in your wallet.` }, { quoted: m })
+    }
+    
+    if (!db[user]) {
+        db[user] = { balance: 1000, bank: 0, lastClaim: '', lastClaimExtra: '', msccount: 0, rank: 'NOOB', bonusesClaimed: [] }
+    }
+    
+    db[sender].balance -= amount
+    db[user].balance += amount
+    
+    fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
+    
+    await conn.sendMessage(from, { 
+        text: `✅ *TRANSFER SUCCESSFUL*\n\n💰 *Sent:* ${amount.toLocaleString()} 🪙\n👤 *Recipient:* @${user.split('@')[0]}\n\nYour new wallet balance: ${db[sender].balance.toLocaleString()} 🪙`, 
+        mentions: [user] 
+    }, { quoted: m })
+}
+
 if (body === '@susanooff') {
     db[sender].passives = (db[sender].passives || []).filter(p => p !== 'susanoo')
     fs.writeFileSync('./economyData.json', JSON.stringify(db, null, 2))
