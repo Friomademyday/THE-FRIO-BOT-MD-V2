@@ -1389,6 +1389,41 @@ if (body.startsWith('@withdraw')) {
     await conn.sendMessage(from, { text: `📤 *WITHDRAWAL SUCCESSFUL*\n\n🏦 *Taken from Bank:* ${val.toLocaleString()} 🪙\n👛 *Added to Wallet:* ${amountToWallet.toLocaleString()} 🪙\n💸 *Transaction Fee (10%):* ${tax.toLocaleString()} 🪙` }, { quoted: m })
         }
 
+            if (body.startsWith('@balance')) {
+    let user = m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || m.message.extendedTextMessage?.contextInfo?.participant || sender
+    
+    if (!db[user]) {
+        db[user] = { 
+            coins: 1000, 
+            emblems: 0, 
+            rank: 'NOOB', 
+            collection: [], 
+            inventory: [], 
+            lastClaim: '', 
+            msccount: 0 
+        }
+        saveDb()
+    }
+
+    let currentCoins = db[user].coins || 0
+
+    await conn.sendMessage(from, { 
+        text: `💰 *USER ASSETS* 💰\n\n👤 *User:* @${user.split('@')[0]}\n👛 *Coins:* ${currentCoins.toLocaleString()} 🪙\n\n💳 *Total Wallet:* ${currentCoins.toLocaleString()} 🪙`, 
+        mentions: [user] 
+    }, { quoted: m })
+}
+
+if (body.startsWith('@bank')) {
+    const userEmblems = db[sender].emblems || 0
+    const userCoins = db[sender].coins || 0
+    
+    await conn.sendMessage(from, { 
+        image: fs.readFileSync('./BOTMEDIAS/finance.jpg'),
+        caption: `🏦 *FINANCE HUB* 🏦\n\n*User:* @${sender.split('@')[0]}\n*Emblems:* ${userEmblems.toLocaleString()} 💠\n*Coins:* ${userCoins.toLocaleString()} 🪙\n\n━━━━━━━━━━━━━━━\nℹ️ *BANKING INFO:*\n💠 Emblems are secured assets and cannot be robbed.\n🛍️ Use Emblems directly in the shop without withdrawing.\n━━━━━━━━━━━━━━━`,
+        mentions: [sender]
+    }, { quoted: m })
+}
+
 if (body.startsWith('@lb')) {
     let board = Object.keys(db)
         .filter(id => id !== botNumber)
